@@ -2,7 +2,7 @@ from django.contrib.auth.tokens import default_token_generator
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.utils.http import urlsafe_base64_decode
-
+from vendor.models import Vendor
 from .forms import UserForm
 from .models import User, UserProfile
 from django.contrib import messages, auth
@@ -44,8 +44,8 @@ def register_user(request):
             username = form.cleaned_data['username']
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
-            user = User.object.create_user(firstname=firstname, lastname=lastname, username=username, email=email,
-                                           password=password)
+            user = User.objects.create_user(firstname=firstname, lastname=lastname, username=username, email=email,
+                                            password=password)
             user.role = User.CUSTOMER
             user.save()
 
@@ -84,8 +84,8 @@ def register_vendor(request):
             username = form.cleaned_data['username']
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
-            user = User.object.create_user(firstname=firstname, lastname=lastname, username=username, email=email,
-                                           password=password)
+            user = User.objects.create_user(firstname=firstname, lastname=lastname, username=username, email=email,
+                                            password=password)
             user.role = User.VENDOR
             user.save()
 
@@ -169,6 +169,10 @@ def customer_dashboard(request):
 @login_required(login_url='login')
 @user_passes_test(check_role_vendor)
 def vendor_dashboard(request):
+    # vendor = Vendor.objects.get(user=request.user)
+    # context = {
+    #     'vendor': vendor,
+    # }
     return render(request, 'accounts/vendor_dashboard.html')
 
 

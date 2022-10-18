@@ -1,0 +1,11 @@
+{% autoescape off %}
+
+Hi {{vendor_user.vendor_name}},
+{% if is_approved %}
+Congratulations! Your restaurant has been approved by our team.
+{% else %}
+Sorry! Your restaurant is not approved to share menu on our marketplace. for more information please contact support@foodonline.com . FoodOnline
+{% endif %}
+
+
+{% endautoescape %}
