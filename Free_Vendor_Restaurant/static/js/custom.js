@@ -48,11 +48,9 @@ function onPlaceChanged (){
             if(place.address_components[i].types[j] == 'country'){
                 $('#id_country').val(place.address_components[i].long_name)
             }
-
             if(place.address_components[i].types[j] == 'administrative_area_level_1'){
                 $('#id_state').val(place.address_components[i].long_name)
             }
-
             if(place.address_components[i].types[j] == 'locality'){
                 $('#id_city').val(place.address_components[i].long_name)
             }
@@ -62,7 +60,6 @@ function onPlaceChanged (){
             else{
                 $('#id_pin_code').val("")
             }
-
         }
     }
 }
