@@ -34,5 +34,8 @@ class FoodItem(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def clean(self):
+        self.food_title = self.food_title.capitalize()
+
     def __str__(self):
         return self.food_title
