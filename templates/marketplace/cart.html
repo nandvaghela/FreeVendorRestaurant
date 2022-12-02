@@ -29,9 +29,9 @@
 														{% if cart_items%}
 														{% for item in cart_items %}
 														<li id="item-{{item.id}}">
-															<div class="image-holder"> <img src="{{ item.fooditem.image.url }}" alt=""></div>
+															<div class="image-holder"> <img src="{{ item.fooditem.image.url }}" height="60px" alt=""></div>
 															<div class="text-holder">
-																<h6>{{item.fooditem.title}}</h6>
+																<h6>{{item.fooditem.food_title}}</h6>
 																<span>{{item.fooditem.description}}</span>
 																<a href="{% url 'vendor_details' item.fooditem.vendor.vendor_slug %}" class="badge badge-warning">{{ item.fooditem.vendor }}</a>
 															</div>

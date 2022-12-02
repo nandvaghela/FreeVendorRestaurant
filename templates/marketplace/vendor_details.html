@@ -102,9 +102,9 @@
 													<ul>
 														{% for food in category.fooditems.all %}
 														<li>
-															<div class="image-holder"> <img src="{{food.image.url}}" alt=""></div>
+															<div class="image-holder"> <img src="{{food.image.url}}" height="60px" alt=""></div>
 															<div class="text-holder">
-																<h6>{{food.title}}</h6>
+																<h6>{{food.food_title}}</h6>
 																<span>{{food.description}}</span>
 															</div>
 															<div class="price-holder">
