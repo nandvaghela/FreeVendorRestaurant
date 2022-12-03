@@ -90,7 +90,7 @@ $(document).ready(function(){
 
                     // subtotal, tax and grand total
                     applyCartAmounts(
-                        response.cart_amount['subtotal'],
+                        response.cart_amount['sub_total'],
                         response.cart_amount['tax_dict'],
                         response.cart_amount['grand_total']
                     )
@@ -132,7 +132,7 @@ $(document).ready(function(){
                     $('#qty-'+food_id).html(response.qty);
 
                     applyCartAmounts(
-                        response.cart_amount['subtotal'],
+                        response.cart_amount['sub_total'],
                         response.cart_amount['tax_dict'],
                         response.cart_amount['grand_total']
                     )
@@ -168,7 +168,7 @@ $(document).ready(function(){
                     swal(response.status, response.message, "success")
 
                     applyCartAmounts(
-                        response.cart_amount['subtotal'],
+                        response.cart_amount['sub_total'],
                         response.cart_amount['tax_dict'],
                         response.cart_amount['grand_total']
                     )
@@ -200,9 +200,9 @@ $(document).ready(function(){
 
 
     // apply cart amounts
-    function applyCartAmounts(subtotal, tax_dict, grand_total){
+    function applyCartAmounts(sub_total, tax_dict, grand_total){
         if(window.location.pathname == '/cart/'){
-            $('#subtotal').html(subtotal)
+            $('#sub_total').html(sub_total)
             $('#total').html(grand_total)
 
             console.log(tax_dict)
