@@ -1,14 +1,16 @@
+import pytz
 from django.contrib.auth.decorators import login_required
 from django.contrib.gis.db.models.functions import Distance
 from django.contrib.gis.geos import GEOSGeometry
 from django.db.models import Prefetch, Q
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
-from vendor.models import Vendor
+from vendor.models import Vendor, OpeningHours
 from menu.models import Category, FoodItem
 from .models import Cart
 from .context_processors import get_cart_counter, get_cart_amount
 from django.contrib.gis.measure import D  # ``D`` is a shortcut for ``Distance``
+from datetime import date, datetime
 
 
 def is_ajax(request):
@@ -29,6 +31,13 @@ def marketplace(request):
 def vendor_details(request, vendor_slug=None):
     vendor = get_object_or_404(Vendor, vendor_slug=vendor_slug)
 
+    # Getting opening hours
+    opening_hours = OpeningHours.objects.filter(vendor=vendor).order_by('day', 'from_hour')
+    today = date.today().isoweekday()
+    print(today)
+    # Getting current day's opening hours
+    current_opening_hours = OpeningHours.objects.filter(vendor=vendor, day=today)
+
     categories = Category.objects.filter(vendor=vendor).prefetch_related(
         Prefetch(
             'fooditems',
@@ -43,7 +52,9 @@ def vendor_details(request, vendor_slug=None):
     context = {
         'vendor': vendor,
         'categories': categories,
-        'cart_items': cart_items
+        'cart_items': cart_items,
+        'opening_hours': opening_hours,
+        'current_opening_hours': current_opening_hours,
     }
     return render(request, 'marketplace/vendor_details.html', context)
 

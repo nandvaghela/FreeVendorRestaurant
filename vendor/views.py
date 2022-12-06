@@ -1,10 +1,12 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.db import IntegrityError
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
-from .forms import VendorForm
+from .forms import VendorForm, OpeningHoursForm
 from accounts.forms import UserProfileForm
 from accounts.models import UserProfile
-from .models import Vendor
+from .models import Vendor, OpeningHours
 from accounts.views import check_role_vendor
 from menu.models import Category, FoodItem
 from menu.forms import CategoryForm, FoodItemForm
@@ -14,6 +16,10 @@ from django.template.defaultfilters import slugify
 def get_vendor(request):
     vendor = Vendor.objects.get(user=request.user)
     return vendor
+
+
+def is_ajax(request):
+    return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
 
 
 # Create your views here
@@ -81,7 +87,7 @@ def add_category(request):
             category = form.save(commit=False)
             category.vendor = get_vendor(request)
             category.save()
-            category.slug = slugify(category_name)+'-'+str(category.id)
+            category.slug = slugify(category_name) + '-' + str(category.id)
             category.save()
             messages.success(request, "Category Added successfully ")
             return redirect('menu_builder')
@@ -201,3 +207,65 @@ def delete_food(request, pk=None):
     food_item.delete()
     messages.success(request, "Food item deleted successfully ")
     return redirect('fooditems_by_category', food_item.category.id)
+
+
+@login_required(login_url='login')
+@user_passes_test(check_role_vendor)
+def opening_hours(request):
+    opening_hours = OpeningHours.objects.filter(vendor=get_vendor(request))
+    form = OpeningHoursForm()
+    context = {
+        'form': form,
+        'opening_hours': opening_hours,
+    }
+    return render(request, 'vendor/opening_hours.html', context)
+
+
+@login_required(login_url='login')
+@user_passes_test(check_role_vendor)
+def add_opening_hours(request):
+    if request.user.is_authenticated:
+        if is_ajax(request=request) and request.method == 'POST':
+
+            day = request.POST.get('day')
+            from_hour = request.POST.get('from_hour')
+            to_hour = request.POST.get('to_hour')
+            is_closed = request.POST.get('is_closed')
+            print(day, from_hour, to_hour, is_closed)
+
+            try:
+                hour = OpeningHours.objects.create(vendor=get_vendor(request), day=day, from_hour=from_hour,
+                                                   to_hour=to_hour, is_closed=is_closed)
+                if hour:
+                    day = OpeningHours.objects.get(id=hour.id)
+                    if day.is_closed:
+                        response = {'status': 'success', 'id': hour.id, 'day': day.get_day_display(),
+                                    'is_closed': 'Closed'}
+                    else:
+                        response = {'status': 'success', 'id': hour.id, 'day': day.get_day_display(),
+                                    'from_hour': day.from_hour, 'to_hour': day.to_hour,
+                                    'is_closed': 'Open'}
+                    return JsonResponse(response)
+
+            except IntegrityError as e:
+                response = {'status': 'failed', 'message': from_hour + '-' + to_hour + ' already exists for this day!'}
+                return JsonResponse(response)
+
+        else:
+            HttpResponse('Invalid Request')
+    else:
+        HttpResponse('Invalid Request')
+
+
+@login_required(login_url='login')
+@user_passes_test(check_role_vendor)
+def remove_opening_hours(request, pk=None):
+    if request.user.is_authenticated:
+        if is_ajax(request=request):
+            hour = get_object_or_404(OpeningHours, pk=pk)
+            hour.delete()
+            return JsonResponse({'status': 'success', 'id': pk})
+        else:
+            HttpResponse('Invalid Request')
+    else:
+        HttpResponse('Invalid Request')
