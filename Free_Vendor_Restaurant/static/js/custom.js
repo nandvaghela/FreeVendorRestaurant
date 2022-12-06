@@ -77,7 +77,7 @@ $(document).ready(function(){
             type: 'GET',
             url: url,
             success: function(response){
-                console.log(response)
+//                console.log(response)
                 if(response.status == 'login_required'){
                     swal(response.message, '', 'info').then(function(){
                         window.location = '/login';
@@ -94,7 +94,9 @@ $(document).ready(function(){
                         response.cart_amount['tax_dict'],
                         response.cart_amount['grand_total']
                     )
+                    console.log(response.cart_amount['tax_dict'])
                 }
+
             }
         })
     })
@@ -200,10 +202,17 @@ $(document).ready(function(){
 
 
     // apply cart amounts
-    function applyCartAmounts(sub_total, tax, grand_total){
+    function applyCartAmounts(sub_total, tax_dict, grand_total){
         if(window.location.pathname == '/cart/'){
             $('#sub_total').html(sub_total)
-            $('#tax').html(tax)
+
+            for(key1 in tax_dict){
+            console.log(tax_dict[key1])
+                for(key2 in tax_dict[key1]){
+                    //console.log(tax_dict[key1][key2])
+                    $("#tax-"+key1).html(tax_dict[key1][key2])
+                }
+            }
             $('#total').html(grand_total)
         }
     }
