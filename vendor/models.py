@@ -48,6 +48,7 @@ class Vendor(models.Model):
                     'user': self.user,
                     'vendor_user': vendor_user,
                     'is_approved': self.is_approved,
+                    'to_email': self.user.email,
                 }
                 if self.is_approved:
                     # send notification email
@@ -57,6 +58,7 @@ class Vendor(models.Model):
                         'user': self.user,
                         'vendor_user': vendor_user,
                         'is_approved': self.is_approved,
+                        'to_email': self.user.email,
                     }
                     send_notification(mail_subject, mail_template, context)
                 else:

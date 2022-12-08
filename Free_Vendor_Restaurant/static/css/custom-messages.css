@@ -31,3 +31,25 @@
 .btn-success.add_hour{
     padding: 7px 15px 7px 15px;
 }
+
+/* Payment radio button */
+.payment-method [type=radio]{
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.payment-method [type=radio] + img{
+    cursor: pointer;
+    padding: 5px;
+}
+
+/* Payment button Checked style */
+.payment-method [type=radio]:checked + img{
+    outline: 2px solid #ff0000;
+}
+
+table > tbody > tr > td{
+    border: none !important;
+}
