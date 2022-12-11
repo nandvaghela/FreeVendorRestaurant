@@ -12,6 +12,8 @@ from .utils import detect_user, send_verification_email
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.exceptions import PermissionDenied
 
+from orders.models import Order
+
 
 # Restrict vendor from accessing user page
 def check_role_vendor(user):
@@ -166,7 +168,14 @@ def dashboard(request):
 @login_required(login_url='login')
 @user_passes_test(check_role_customer)
 def customer_dashboard(request):
-    return render(request, 'accounts/customer_dashboard.html')
+
+    orders = Order.objects.filter(user=request.user, is_ordered=True)
+    recent_orders = orders[:5]
+    context = {
+        'orders': recent_orders,
+        'order_count': orders.count(),
+    }
+    return render(request, 'accounts/customer_dashboard.html', context)
 
 
 @login_required(login_url='login')
