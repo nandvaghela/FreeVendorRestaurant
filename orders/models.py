@@ -78,7 +78,7 @@ class Order(models.Model):
                 tax_dict.update(val)
 
                 # calculate tax
-                # {'CGST': {'9.00': '6.03'}, 'SGST': {'7.00': '4.69'}}
+                # {'HST': {'13.00': '3.33'}}
                 for i in val:
                     for j in val[i]:
                         tax += float(val[i][j])

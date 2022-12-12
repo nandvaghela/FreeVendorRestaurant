@@ -11,7 +11,7 @@ from vendor.forms import VendorForm
 from .utils import detect_user, send_verification_email
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.exceptions import PermissionDenied
-
+import datetime
 from orders.models import Order
 
 
@@ -95,7 +95,7 @@ def register_vendor(request):
             vendor = vendor_form.save(commit=False)
             vendor.user = user
             vendor_name = vendor_form.cleaned_data['vendor_name']
-            vendor.vendor_slug = slugify(vendor_name)+'-'+str(user.id)
+            vendor.vendor_slug = slugify(vendor_name) + '-' + str(user.id)
             user_profile = UserProfile.objects.get(user=user)
             vendor.user_profile = user_profile
             vendor.save()
@@ -168,7 +168,6 @@ def dashboard(request):
 @login_required(login_url='login')
 @user_passes_test(check_role_customer)
 def customer_dashboard(request):
-
     orders = Order.objects.filter(user=request.user, is_ordered=True)
     recent_orders = orders[:5]
     context = {
@@ -181,11 +180,28 @@ def customer_dashboard(request):
 @login_required(login_url='login')
 @user_passes_test(check_role_vendor)
 def vendor_dashboard(request):
-    # vendor = Vendor.objects.get(user=request.user)
-    # context = {
-    #     'vendor': vendor,
-    # }
-    return render(request, 'accounts/vendor_dashboard.html')
+    vendor = Vendor.objects.get(user=request.user)
+    orders = Order.objects.filter(vendors__in=[vendor.id], is_ordered=True).order_by('-created_at')
+    recent_orders = orders[:5]
+
+    current_month = datetime.datetime.now().month
+    current_month_orders = orders.filter(vendors__in=[vendor.id], created_at__month=current_month)
+    current_month_revenue = 0
+    for i in current_month_orders:
+        current_month_revenue += i.get_total_by_vendor()['grand_total']
+    total_revenue = 0
+
+    for i in orders:
+        total_revenue += i.get_total_by_vendor()['grand_total']
+
+    context = {
+        'vendor': vendor,
+        'orders': recent_orders,
+        'orders_count': orders.count(),
+        'total_revenue': total_revenue,
+        'current_month_revenue': current_month_revenue,
+    }
+    return render(request, 'accounts/vendor_dashboard.html', context)
 
 
 def activate_user(request, uidb64, token):
