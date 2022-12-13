@@ -160,7 +160,8 @@ DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL')
 
 GOOGLE_API_KEY = config('GOOGLE_API_KEY')
 
-GDAL_LIBRARY_PATH = '/opt/homebrew/opt/gdal/lib/libgdal.dylib'
-GEOS_LIBRARY_PATH = '/opt/homebrew/opt/geos/lib/libgeos_c.dylib'
+if DEBUG:
+    GDAL_LIBRARY_PATH = '/opt/homebrew/opt/gdal/lib/libgdal.dylib'
+    GEOS_LIBRARY_PATH = '/opt/homebrew/opt/geos/lib/libgeos_c.dylib'
 
 PAYPAL_CLIENT_ID = config('PAYPAL_CLIENT_ID')
