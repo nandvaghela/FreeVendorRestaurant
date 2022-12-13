@@ -185,7 +185,7 @@ def payments(request):
                 send_notification(mail_subject, mail_template, context)
 
         # 7. Clear the Cart
-        # cart_items.delete()
+        cart_items.delete()
 
         # 8. Return the AJAX response
         response = {
