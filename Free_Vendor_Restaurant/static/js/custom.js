@@ -65,6 +65,14 @@ function onPlaceChanged (){
 }
 
 $(document).ready(function(){
+
+     // place the cart item quantity on load
+    $('.item_qty').each(function(){
+        var the_id = $(this).attr('id')
+        var qty = $(this).attr('data-qty')
+        $('#'+the_id).html(qty)
+    })
+
     // add to cart
     $('.add_to_cart').on('click', function(e){
         e.preventDefault();
@@ -102,12 +110,7 @@ $(document).ready(function(){
     })
 
 
-    // place the cart item quantity on load
-    $('.item_qty').each(function(){
-        var the_id = $(this).attr('id')
-        var qty = $(this).attr('data-qty')
-        $('#'+the_id).html(qty)
-    })
+
 
     // decrease cart
     $('.decrease_cart').on('click', function(e){

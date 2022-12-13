@@ -6,28 +6,26 @@
 		<div class="main-section">
 			<!-- Home Pages Elements Strat -->
 			<!-- Main Search Start -->
-			<div class="page-section nopadding cs-nomargin" style="padding-top: 200px; padding-bottom: 150px; margin-bottom: 0px; background: url({% static 'extra-images/bg-image1.jpg'%}) no-repeat center / cover;">
+			<div class="page-section nopadding cs-nomargin main-search-bar" style="padding-top: 200px; padding-bottom: 150px; margin-bottom: 0px; background: url({% static 'extra-images/bg-image1.jpg'%}) no-repeat center / cover;">
 				<div class="container">
 					<div class="row">
 						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
 							<div class="element-title">
 								<h1 style="font-size: 40px; color: #505050; text-transform: uppercase; line-height: 50px; margin-bottom: 25px; text-align:center;">
 									We are in the business of food<br>our restaurants do</h1>
-								<p style="font-size: 18px; letter-spacing: 1px; color: #505050; text-align:center;">
-									Ridiculus sociosqu
-									cursus neque cursus curae ante scelerisque vehicula.</p>
+
 							</div>
 						</div>
 						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
 							<div class="main-search fancy bg-holder">
 								<form action="{% url 'search' %}" method="get">
 									<div class="row">
-										<div class="col-lg-4 col-md-4 col-sm-3 ml-1 col-xs-12 p-2">
+										<div class="col-lg-4 col-md-4 col-sm-3 col-xs-12 ">
 											<div class="field-holder">
 												<input type="text" name="keyword" placeholder="Restaurant name or Dish name">
 											</div>
 										</div>
-										<div class="col-lg-4 col-md-4 col-sm-5 col-xs-12 p-2">
+										<div class="col-lg-4 col-md-4 col-sm-5 col-xs-12">
 											<div class="field-holder">
 												<ul>
 													<li class="select-location">
@@ -42,7 +40,7 @@
 												</ul>
 											</div>
 										</div>
-										<div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 p-2">
+										<div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
 											<select name="radius" id="radius" style="height:50px;" required>
 												<option value="">Choose Radius</option>
 												<option value="5">5 km</option>
@@ -54,7 +52,7 @@
 												<option value="100">100 km</option>
 											</select>
 										</div>
-										<div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 p-2">
+										<div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
 											<div class="field-holder">
 												<input type="submit" value="Search">
 											</div>
@@ -86,9 +84,9 @@
 									<li class="has-border">
 										<figure>
 											{% if vendor.user_profile.profile_picture%}
-											<a href="{% url 'vendor_details' vendor.vendor_slug %}"><img src="{{vendor.user_profile.profile_picture.url}}" class="attachment-full size-full wp-post-image" alt=""></a>
+											<a href="{% url 'vendor_details' vendor.vendor_slug %}"><img src="{{vendor.user_profile.profile_picture.url}}" height="125" class="attachment-full size-full wp-post-image" alt=""></a>
 											{% else %}
-											<a href="{% url 'vendor_details' vendor.vendor_slug %}"><img src="{% static 'images/default-profile' %}" class="attachment-full size-full wp-post-image" alt=""></a>
+											<a href="{% url 'vendor_details' vendor.vendor_slug %}"><img src="{% static 'images/default-profile' %}" height="125" class="attachment-full size-full wp-post-image" alt=""></a>
 											{% endif %}
 										</figure>
 									</li>
