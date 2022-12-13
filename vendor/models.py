@@ -1,5 +1,3 @@
-from turtle import update
-
 import pytz
 from accounts.models import User, UserProfile
 from django.db import models
