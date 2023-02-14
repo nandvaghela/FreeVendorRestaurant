@@ -81,4 +81,5 @@ Demo Images
 <img width="1512" alt="Screenshot 2023-01-22 at 5 29 53 PM" src="https://user-images.githubusercontent.com/45141940/218870943-045c61fe-be6f-40f7-ab0d-966ec518c567.png">
 
 Contributing
-Contributions are welcome! If you find a bug or want to suggest a new feature, feel free to open an issue or submit a pull request.
+
+Contributions are always welcome! If you find a bug or want to suggest a new feature, feel free to open an issue or submit a pull request.
